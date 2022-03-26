@@ -1,0 +1,45 @@
+---
+# tasks file for wire-creator
+# Start generate keys if the public key is not set
+- name: start generate keys 
+  include_tasks: 
+    file: wg_genkeys.yml
+  with_items:
+    "{{ wg_add_users }}"
+  when: wg_add_users != None and item.pubkey is not defined
+
+# Add configuration and pubkey to Wireguard's config
+- name: add configuration and pubkey to Wireguard's config
+  ansible.builtin.blockinfile:
+    #backup: yes
+    state: present
+    dest: "{{ wg_conf_file }}"
+    marker: "#<!-- {mark} USER MANAGED BLOCK | {{ item.login }} -->"
+    block: "{{ lookup('template', 'wg0-server.j2') }}"
+  with_items:
+    "{{ wg_add_users }}"
+  become: yes
+  when: wg_add_users != None and item.pubkey is defined
+  notify:
+    - save user's configs to host
+
+# Delete configuration and pubkey to Wireguard's config
+- name: delete configuration and pubkey to Wireguard's config
+  ansible.builtin.blockinfile:
+    #backup: yes
+    state: present
+    dest: "{{ wg_conf_file }}"
+    marker: "#<!-- {mark} USER MANAGED BLOCK | {{ item }} -->"
+    block: ""
+  with_items:
+    "{{ wg_del_users }}"
+  become: yes
+  when: wg_del_users != None
+
+# Reload Wireguard's process
+- name: reload Wireguard's process
+  ansible.builtin.service:
+    name: wg-quick@{{ wg_conf_name }}
+    state: reloaded
+  become: yes
+  when: wg_reload

@@ -1,0 +1,11 @@
+[Interface]
+Address = {{ item.ip }}/{{ wg_user_prefix }}
+PrivateKey = {{ None if item.privkey is not defined else item.privkey }}
+{% if wg_user_dns is defined %}
+DNS = {{ wg_user_dns }}
+{% endif %}
+[Peer]
+PublicKey = {{ wg_server_pubkey }}
+AllowedIPs = {{ wg_user_allowips }}
+Endpoint = {{ wg_user_endpoint }}
+PersistentKeepalive = 15

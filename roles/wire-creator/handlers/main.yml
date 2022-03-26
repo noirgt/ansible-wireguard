@@ -1,0 +1,10 @@
+---
+# handlers file for wire-creator
+# Save user configs to host
+- name: save user's configs to host
+  ansible.builtin.template:
+    src: user.conf.j2
+    dest: "{{ wg_local_conf_path }}/{{ item.login }}.conf"
+  delegate_to: localhost
+  with_items:
+    "{{ wg_add_users }}"

@@ -1,0 +1,3 @@
+---
+# vars file for wire-creator
+wg_conf_file: /etc/wireguard/{{ wg_conf_name }}.conf

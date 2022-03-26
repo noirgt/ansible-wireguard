@@ -1,0 +1,6 @@
+# {{ "%-25s"|format(item.name) }} - {{ "%-20s"|format(item.login) }} - {{ "%-15s"|format(item.ip) }}
+# - {{ item.pubkey }}
+[Peer]
+# friendly_name = {{ item.login }}
+PublicKey = {{  item.pubkey }}
+AllowedIPs = {{  item.ip }}/32

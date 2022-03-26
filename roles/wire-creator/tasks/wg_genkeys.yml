@@ -1,0 +1,23 @@
+---
+# Generate private Wireguard's key
+- name: generate private Wireguard's key
+  ansible.builtin.shell: wg genkey
+  register: privkey
+  become: yes
+ 
+# Generate public Wireguard's key from private key
+- name: generate public Wireguard's key
+  ansible.builtin.shell: echo '{{ privkey.stdout }}' | wg pubkey
+  register: pubkey
+  become: yes
+
+# Create new dict with public and private Wireguard's
+- name: create new dict with public and private Wireguard's
+  set_fact:
+    new_dict: 
+      - "{{ item | default({}) | combine( { 'pubkey': pubkey.stdout },  { 'privkey': privkey.stdout }) }}"
+
+# Add new dict with public and private Wireguard's key to list (wg_add_users)
+- name: add new dict with public and private Wireguard's key to list
+  set_fact:  
+    wg_add_users: "{{ wg_add_users + new_dict }}"

@@ -1,0 +1,5 @@
+---
+# defaults file for wire-creator
+ansible_connection: ssh
+ansible_ssh_port: 60235
+wg_reload: False

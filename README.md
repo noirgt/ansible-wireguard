@@ -1,3 +1,5 @@
+![ansible](./images/ansible-logo.png) ![wireguard](./images/wireguard-logo.png)
+
 Описание всех playbooks:
 ------------------------
 1. **wg-create-playbook**:

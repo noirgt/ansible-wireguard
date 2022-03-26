@@ -1,0 +1,24 @@
+---
+ansible_ssh_port: 2235
+
+# Reload Wiregurad's process after action (True or False)
+wg_reload: True 
+
+wg_conf_name: 'wg0-server'
+wg_conf_file: /etc/wireguard/{{ wg_conf_name }}.conf
+wg_local_conf_path: "/home/user/ansible-wireguard/CONFIGS"
+
+# Variables for user's config
+wg_server_pubkey: 9DrAt3LYdDDmdRJNznJ9/hWZc0dEIiCRK+oszZGHX0f=
+wg_user_prefix: 24
+wg_user_dns: '10.201.0.53,10.202.0.53,1.1.1.1,example.com'
+wg_user_endpoint: wg.example.com:39999
+wg_user_allowips: '10.0.0.0/24, 192.168.205.0/24, 213.26.36.105/32, 94.248.191.60/32'
+
+# Variable for ADD/CHANGE user's config
+wg_add_users:
+- {name: 'Henry Ford', login: 'hford', ip: '192.168.245.109'}
+- {name: 'John Smith', login: 'jsmith', ip: '192.168.245.51', pubkey: 'oWiW1z9GaRf/SeFfS5fKK2KVhedkuoXZHPjI7iLPFzo='}
+# Variable for DELETE user's config
+wg_del_users:
+- 'panderson'

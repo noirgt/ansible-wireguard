@@ -1,0 +1,16 @@
+---
+- hosts: 
+    wg_server
+    wg_server_msp
+  # --- ALL Tasks
+  tasks:
+    # Add configuration and pubkey to Wireguard's config
+    - name: register Wireguard's users and IPs
+      ansible.builtin.shell:
+        cmd: grep -r 'BEGIN' {{ wg_conf_file }} -A 2 | sed '/\<BEGIN\>/d' | awk 'FNR%3' | sed 'N;s/\n/ /' | sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n
+      register: wg_users
+      become: yes
+
+    - name: print Wireguard's users and IPs
+      ansible.builtin.debug:
+        var: wg_users.stdout_lines

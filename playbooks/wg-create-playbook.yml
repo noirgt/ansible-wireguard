@@ -1,0 +1,16 @@
+---
+- name: Create/Delete users of Wireguard
+  hosts: 
+    - wg_server
+
+  tasks:
+    - name: Include wire-ipset
+      include_role:
+        name: wire-ipset
+      with_items:
+        "{{ wg_del_users }}"
+      when: wg_del_users != None
+
+    - name: Include wire-creator
+      include_role:
+        name: wire-creator
